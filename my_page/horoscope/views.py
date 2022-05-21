@@ -1,6 +1,7 @@
 from datetime import date
 
 from django.http import HttpResponse, HttpResponseNotFound, HttpResponseRedirect
+from django.template.loader import render_to_string
 
 from django.urls import reverse
 
@@ -137,6 +138,16 @@ type_zodiac_dict = {
     'water': ['cancer', 'scorpio', 'pisces'],
 }
 
+def get_yyyy_converters(request, sign_zodiac):
+    return HttpResponse(f'Вы передали число из 4х цифр - {sign_zodiac}')
+
+
+def get_my_float_converters(request, sign_zodiac):
+    return HttpResponse(f'Вы передали вещественное число - {sign_zodiac}')
+
+def get_my_date_converters(request, sign_zodiac):
+    return HttpResponse(f'Вы передали дату - {sign_zodiac}')
+
 
 def index(request):
     zodiacs = list(zodiac_dict)
@@ -166,6 +177,26 @@ def get_zodiac_sign_of_type(request, zodiac_type):
     return HttpResponse(response)
 
 
+# def get_info_about_zodiac_sign(request, sign_zodiac: str):
+#     if sign_zodiac == "type":
+#         types = list(type_zodiac_dict)
+#         li_elements = ''
+#         for h_type in types:
+#             redirect_path = reverse('zodiac_type_name', args=[h_type])
+#             li_elements += f'\n<li> <a href="{redirect_path}"> {h_type.title()} </a> </li>'
+#         response = f'''
+#             <ul>
+#                 {li_elements}
+#             </ul>
+#             '''
+#         return HttpResponse(response)
+#     description = zodiac_dict.get(sign_zodiac, None).get('description')
+#     response1 = render_to_string('horoscope/info_zodiac.html')
+#     if description:
+#         return HttpResponse(description)
+#     else:
+#         return HttpResponseNotFound(f"Неизвестный знак зодиака - {sign_zodiac}")
+
 def get_info_about_zodiac_sign(request, sign_zodiac: str):
     if sign_zodiac == "type":
         types = list(type_zodiac_dict)
@@ -179,11 +210,8 @@ def get_info_about_zodiac_sign(request, sign_zodiac: str):
             </ul>
             '''
         return HttpResponse(response)
-    description = zodiac_dict.get(sign_zodiac, None).get('description')
-    if description:
-        return HttpResponse(description)
-    else:
-        return HttpResponseNotFound(f"Неизвестный знак зодиака - {sign_zodiac}")
+    response1 = render_to_string('horoscope/info_zodiac.html')
+    return HttpResponse(response1)
 
 
 def get_info_about_zodiac_sign_by_number(request, sign_zodiac: int):
