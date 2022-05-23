@@ -16,7 +16,7 @@ week_days_dict = {
 def get_info_about_week_day(request, day_of_the_week: str):
     description = week_days_dict.get(day_of_the_week, None)
     if description:
-        return HttpResponse(description)
+        return render(request, 'week_days/greeting.html',)
     else:
         return HttpResponseNotFound(f"Неизвестный день недели - {day_of_the_week}")
 

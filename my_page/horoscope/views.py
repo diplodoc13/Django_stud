@@ -1,6 +1,7 @@
 from datetime import date
 
 from django.http import HttpResponse, HttpResponseNotFound, HttpResponseRedirect
+from django.shortcuts import render
 from django.template.loader import render_to_string
 
 from django.urls import reverse
@@ -138,12 +139,14 @@ type_zodiac_dict = {
     'water': ['cancer', 'scorpio', 'pisces'],
 }
 
+
 def get_yyyy_converters(request, sign_zodiac):
     return HttpResponse(f'Вы передали число из 4х цифр - {sign_zodiac}')
 
 
 def get_my_float_converters(request, sign_zodiac):
     return HttpResponse(f'Вы передали вещественное число - {sign_zodiac}')
+
 
 def get_my_date_converters(request, sign_zodiac):
     return HttpResponse(f'Вы передали дату - {sign_zodiac}')
@@ -210,8 +213,13 @@ def get_info_about_zodiac_sign(request, sign_zodiac: str):
             </ul>
             '''
         return HttpResponse(response)
-    response1 = render_to_string('horoscope/info_zodiac.html')
-    return HttpResponse(response1)
+    description = zodiac_dict[sign_zodiac]['description']
+    sign = zodiac_dict[sign_zodiac]['si'].title()
+    data = {
+        'sign': sign,
+        'dz': description,
+    }
+    return render(request, 'horoscope/info_zodiac.html', context=data)
 
 
 def get_info_about_zodiac_sign_by_number(request, sign_zodiac: int):
@@ -229,5 +237,6 @@ def get_zodiac_sign_by_date(request, month: int, day: int):
     else:
         for i in zodiac_dict:
             if (zodiac_dict[i]['day_start'] <= day and zodiac_dict[i][
-                'month_start'] == month) or (zodiac_dict[i]['day_finish'] >= day and zodiac_dict[i]['month_finish'] == month):
+                'month_start'] == month) or (
+                    zodiac_dict[i]['day_finish'] >= day and zodiac_dict[i]['month_finish'] == month):
                 return HttpResponseRedirect(reverse('horoscope_name', args=[zodiac_dict[i]['si']]))
