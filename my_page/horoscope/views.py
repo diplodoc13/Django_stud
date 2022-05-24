@@ -154,16 +154,12 @@ def get_my_date_converters(request, sign_zodiac):
 
 def index(request):
     zodiacs = list(zodiac_dict)
-    li_elements = ''
-    for sign in zodiacs:
-        redirect_path = reverse('horoscope_name', args=[sign])
-        li_elements += f'<li> <a href="{redirect_path}"> {sign.title()} </a> </li>'
-    response = f'''
-    <ul>
-        {li_elements}
-    </ul>
-    '''
-    return HttpResponse(response)
+    # f'<li> <a href="{redirect_path}"> {sign.title()} </a> </li>'
+    context = {
+        'zodiacs': zodiacs,
+        'zodiac_dict': {}
+    }
+    return render(request, 'horoscope/index.html', context=context)
 
 
 def get_zodiac_sign_of_type(request, zodiac_type):
@@ -213,13 +209,22 @@ def get_info_about_zodiac_sign(request, sign_zodiac: str):
             </ul>
             '''
         return HttpResponse(response)
-    description = zodiac_dict[sign_zodiac]['description']
-    sign = zodiac_dict[sign_zodiac]['si'].title()
-    data = {
-        'sign': sign,
-        'dz': description,
-    }
-    return render(request, 'horoscope/info_zodiac.html', context=data)
+    if sign_zodiac in list(zodiac_dict):
+        description = zodiac_dict[sign_zodiac]['description']
+        sign = sign_zodiac
+        data = {
+            'sign': sign,
+            'dz': description,
+        }
+        return render(request, 'horoscope/info_zodiac.html', context=data)
+    else:
+        sign = sign_zodiac
+        data = {
+            'sign': sign,
+            'dz': None,
+        }
+        return render(request, 'horoscope/info_zodiac.html', context=data)
+
 
 
 def get_info_about_zodiac_sign_by_number(request, sign_zodiac: int):

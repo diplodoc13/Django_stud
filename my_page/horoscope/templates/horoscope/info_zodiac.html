@@ -2,10 +2,16 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Horoscope for {{sign}}</title>
+    <title>Horoscope for {{sign|capfirst}}</title>
 </head>
 <body>
     <h1>Horoscope application</h1>
-    <h2>{{dz}}</h2>
+
+    {% if dz is None %}
+        <h2> Incorrect zodiac sign - {{sign|upper}}</h2>
+    {% else %}
+        <h2>{{dz}}</h2>
+    {% endif  %}
+
 </body>
 </html>
