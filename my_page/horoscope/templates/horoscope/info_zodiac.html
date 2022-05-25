@@ -1,17 +1,19 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Horoscope for {{sign|capfirst}}</title>
-</head>
-<body>
-    <h1>Horoscope application</h1>
+{% extends "base.html" %}
+
+{% block title %}
+    Horoscope for {{sign|capfirst}}
+{% endblock %}
+
+{% block content %}
+
+    {% include 'includes/navbar.html' with a=100 b=200%}
 
     {% if dz is None %}
         <h2> Incorrect zodiac sign - {{sign|upper}}</h2>
     {% else %}
-        <h2>{{dz}}</h2>
+        <h2>{{dz|capfirst}}</h2>
     {% endif  %}
 
-</body>
-</html>
+
+{% endblock %}
+

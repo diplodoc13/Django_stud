@@ -1,0 +1,12 @@
+<nav>
+  <a href="{% url 'horoscope_index'%}">Main</a> |
+  <a href="https://www.homeenglish.ru/OtherGoroscop.htm">Source</a>
+  {% for zodiac in zodiacs %}
+  | <a href="{%url 'horoscope_name' sign_zodiac=zodiac%}">{{ zodiac|title }}</a>
+  {% endfor %}
+</nav>
+<p>Variable sign - {{sign}}</p>
+<p>Variable description - {{dz}}</p>
+<p>Variable zodiacs - {{zodiacs}}</p>
+<p>Variable a - {{a}}</p>
+<p>Variable b - {{b}}</p>

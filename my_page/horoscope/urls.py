@@ -8,7 +8,7 @@ register_converter(converters.MyDateConverter, 'my_date')
 
 
 urlpatterns = [
-    path('', views.index),
+    path('', views.index, name='horoscope_index'),
     # path('<str:key_type>', views.get_zodiac_type),
     path('type/<str:zodiac_type>', views.get_zodiac_sign_of_type, name='zodiac_type_name'),
     path('<yyyy:sign_zodiac>', views.get_yyyy_converters),
